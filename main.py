@@ -1,12 +1,13 @@
 import sys
 from antlr4 import *
 
+from GrammarErrorListener import GrammarErrorListener
 from XMLLexer import XMLLexer
 from XMLParser import XMLParser
 from XMLParserListener import XMLParserListener
 
 
-class Validator():
+class Validator:
     def __init__(self):
         self.files = "./files/"
         self.input = None
@@ -26,8 +27,11 @@ class Validator():
 
     def validate(self):
         lexer = XMLLexer(InputStream(self.code))
+        grammarErrorListener = GrammarErrorListener()
+        lexer.addErrorListener(grammarErrorListener)
         stream = CommonTokenStream(lexer)
         parser = XMLParser(stream)
+        parser.addErrorListener(grammarErrorListener)
         tree = parser.document()
         walker = ParseTreeWalker()
         listener = XMLParserListener()

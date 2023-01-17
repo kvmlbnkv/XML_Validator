@@ -56,6 +56,9 @@ class Validator:
                 print("XML file seems to have correct syntax and is compatible with given schema.")
             else:
                 print("XML file not compatible with given schema.")
+                validation_error_iterator = self.schema.iter_errors(self.code)
+                for idx, validation_error in enumerate(validation_error_iterator, start=1):
+                    print(f'[{idx}] Error in: {validation_error.path} | {validation_error.reason}')
         else:
             print(
                 "XML file seems to have correct syntax. Please provide XML schema file (XSD) in order to fully check the file.")
